@@ -1,0 +1,28 @@
+{
+  "name": "quinto",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "jade": "~1.3.0",
+    "express": "~3.5.0",
+    "colors": "~0.6.2",
+    "mongodb": "~1.3.23",
+    "bower": "~1.3.1",
+    "browserify": "~3.33.0",
+    "socket.io": "~0.9.16"
+  },
+  "config": {
+    "collections": [
+      "projects",
+      "clients",
+      "invoices",
+      "tasks"
+    ]
+  }
+}

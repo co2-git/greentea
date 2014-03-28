@@ -1,0 +1,74 @@
+doctype html
+meta(charset='utf-8')
+title greentea
+link(rel="icon" type="image/png" href="/images/favicon.png")
+link(rel='stylesheet' href='/bower_components/foundation/css/normalize.css')
+link(rel='stylesheet' href='/bower_components/foundation/css/foundation.min.css')
+link(rel='stylesheet' href='/bower_components/font-awesome/css/font-awesome.min.css')
+link(rel='stylesheet' href='/css/quinto.css')
+
+.text-center(ng-app='quinto')
+  .row.collapse
+    .columns.small-12
+      .flash
+
+  .row.collapse(data-topbar)
+    .columns.small-5.text-left
+      a.brand(href='/')
+        i.fa.fa-leaf
+        span  greentea
+
+    .columns.small-7.text-right
+      ul.right.inline-list
+        li
+          a(href)
+            i.fa.fa-tasks
+            span.label.round.alert 43562
+
+        li
+          a(href)
+            i.fa.fa-envelope
+            span.label.round.secondary 0
+        li
+          a(href)
+            i.fa.fa-user
+
+  .row.collapse
+    .columns.small-12
+      ul.breadcrumbs
+        li
+          a(href)
+            i.fa.fa-bars(data-dropdown="drop")
+
+        li(ng-repeat='parent in PAGE.parents')
+          a(ng-href='{{parent.location}}' ng-bind='parent.name')
+        
+        li.current
+          a(ng-href='{{PAGE.location}}' ng-bind='PAGE.name')
+
+      ul#drop.f-dropdown(data-dropdown-content).text-left
+        li
+          a(href='/tasks')
+            i.fa.fa-tasks
+            span   Tasks
+        li
+          a(href='/projects')
+            i.fa.fa-folder-open
+            span   Projects
+        li
+          a(href='/clients')
+            i.fa.fa-smile-o
+            span   Clients
+        li
+          a(href='/invoices')
+            i.fa.fa-shopping-cart
+            span   Invoices
+
+  block content
+
+script(src='/bower_components/jquery/dist/jquery.min.js')
+script(src='/bower_components/foundation/js/foundation.min.js')
+script(src='/bower_components/angular/angular.min.js')
+script(src='/bower_components/moment/moment.js')
+script(src='/socket.io/socket.io.js')
+script(src='/bundle.js')

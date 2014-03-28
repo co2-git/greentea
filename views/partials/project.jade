@@ -1,0 +1,24 @@
+.quinto-focus
+  
+  .row
+    .columns.small-12
+      input.name(type='text' ng-model='project.name' placeholder='Project name')
+
+  .row
+    .columns.small-3
+      big Client
+    .columns.small-9
+      quinto-get-clients
+        select(ng-model='project.client' ng-options='client._id as client.name for client in clients')
+
+  .row
+    .columns.small-12
+      textarea(placeholder='Project description' ng-model='project.description')
+
+  .row
+    .columns.small-12
+      .button-group
+        button.small-6.success(ng-click='save()') Save
+        button.small-6.alert(ng-click='remove()') Delete
+
+  div(ng-repeat='client in clients' ng-bind='client.name')

@@ -1,0 +1,13 @@
+.quinto-focus
+  
+  .row
+    .columns.small-12
+      input.name(type='text' ng-model='client.name' placeholder='Client name')
+
+  .row
+    .columns.small-12
+      .button-group
+        button.small-6.success(ng-click='save()') Save
+        button.small-6.alert(ng-click='remove()') Delete
+
+  div(ng-repeat='client in clients' ng-bind='client.name')
