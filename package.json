@@ -1,7 +1,7 @@
 {
-  "name": "quinto",
-  "version": "0.0.0",
-  "description": "",
+  "name": "greentea",
+  "version": "0.0.2",
+  "description": "A todo manager",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,12 +19,5 @@
     "node-sass": "~0.8.4",
     "uglify-js": "~2.4.13"
   },
-  "config": {
-    "collections": [
-      "projects",
-      "clients",
-      "invoices",
-      "tasks"
-    ]
-  }
+  "config": {}
 }
