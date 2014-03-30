@@ -1,26 +1,70 @@
-/* Get dependencies */
+/*
+ * ============================================================
+ * GET DEPENDENCIES
+ * ============================================================
+*/
 
+// shortcut to require
 var $ =  require;
 
+// get colors to display on terminal
 $('colors');
 
+// get express
 var express = $('express');
-var http = $('http');
-var path = $('path');
-// var packagejson = $('./package.json');
 
-/* Start Express */
+// get http module
+var http = $('http');
+
+// get path module
+var path = $('path');
+
+/*
+ * ============================================================
+ * START EXPRESS
+ * ============================================================
+*/
+
 var app = express();
+
+/*
+ * ============================================================
+ * APP SETTINGS
+ * ============================================================
+*/
+
+// set port to use
+app.set('port', process.env.PORT || 46352)
+
+// set view engine
+app.set('view engine', 'jade');
+
+// set view location
+app.set('views', path.join(__dirname, 'views'));
+
+/*
+ * ============================================================
+ * APP LOCAL VARIABLES
+ * ============================================================
+*/
 
 app.locals.env = app.get('env');
 
-app.set('port', process.env.PORT || 46352)
+app.locals.session = {};
 
-/* Template engine */
-app.set('view engine', 'jade');
+app.locals.conns = [];
 
-/* Views location */
-app.set('views', path.join(__dirname, 'views'));
+app.locals.getConn = function () {
+  return app.locals.conns[0].db;
+};
+
+app.locals.models = {};
+
+/*
+ * ============================================================
+ * MIDDLEWARES
+ * ============================================================
+*/
 
 /* Logger */
 app.use(express.logger('dev'));
@@ -32,7 +76,6 @@ app.use(express.urlencoded());
 app.use(express.json());
 
 app.use(express.cookieParser(Math.random()));
-
 
 /* Use our routes */
 app.use(app.router);
@@ -46,23 +89,6 @@ app.use($('./middlewares/error')(app));
 /* Not found */
 app.use($('./middlewares/not-found')(app));
 
-/* SESSION */
-
-app.locals.session = {};
-
-app.locals.conns = [];
-
-app.locals.getConn = function () {
-  return app.locals.conns[0].db;
-};
-
-app.locals.models = {};
-
-console.log('Starting session'.green);
-
-/* MIDDLEWARE: GOOGLE SESSION */
-// var sessionMiddleware = $('./routes/middlewares/session')(app);
-
 /*
  * ============================================================
  * ROUTES
@@ -74,17 +100,41 @@ app.get('/',
   $('./routes/index')(app)
 );
 
+/*
+ * ============================================================
+ * START SERVER
+ * ============================================================
+ */
+
 /* Start HTTP server */
 var server = http.createServer(app).listen(app.get('port'), function () {
   console.log(('Server started on port ' + app.get('port')).green);
 });
 
+/*
+ * ============================================================
+ * GET SOCKET
+ * ============================================================
+ */
+
 /* Start Socket Server */
 $('./lib/socket/socket')(server, app);
+
+/*
+ * ============================================================
+ * ON EXIT
+ * ============================================================
+ */
 
 process.on('exit', function () {
   $('child_process').spawn('unlink', [ __dirname + '/lock.pid']);
 });
+
+/*
+ * ============================================================
+ * CONNECT TO MONGO
+ * ============================================================
+ */
 
 function connect () {
   if ( ! app.locals.conns.length ) {
@@ -96,29 +146,7 @@ function connect () {
       }
       app.locals.conns.push({
         db: db,
-        uptime: +new Date(),
-        models: {},
-        getModel: function (model, callback) {
-          if ( this.models[model] ) {
-            return callback(null, this.models[model]);
-          }
-
-          require('./lib/mongo/get')(this.db, 'models',
-            {
-              name: model
-            },
-
-            function (error, models) {
-              if ( error ) {
-                return callback(error);
-              }
-
-              this.models[this.model] = models[0];
-
-              callback(null, models[0]);
-
-            }.bind({ model: model, models: models }));
-        }
+        uptime: +new Date()
       });
     });
   }

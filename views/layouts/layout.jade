@@ -35,9 +35,9 @@ link(rel='stylesheet' href='/css/greentea.css')
         .right
           i.fa.fa-thumb-tack.fa-2x(data-add ng-click='add()')
         
-        h2(ng-model='newTodo.name' contenteditable)
+        h2(ng-model='newTodo.name' contenteditable scope='newTodo' name='name')
 
-        p.des(ng-model='newTodo.description' contenteditable)
+        p.des(ng-model='newTodo.description' contenteditable scope='newTodo' name='description')
 
         div.posted Yet to be posted
 
@@ -49,9 +49,9 @@ link(rel='stylesheet' href='/css/greentea.css')
           i.fa.fa-check-square-o.fa-2x(data-done ng-click='done(todo)')
           i.fa.fa-trash-o.fa-2x(data-remove ng-click='remove(todo)')
         
-        h2(ng-bind='todo.name')
+        h2(ng-model='todo.name' contenteditable='true' save-todo-on-change name='name' scope='todo')
 
-        p.des(ng-bind='todo.description')
+        p.des(ng-model='todo.description' contenteditable='true' save-todo-on-change name='description' scope='todo')
 
         p.posted Posted 
           span(ng-bind='todo.moments.created | fromNow')

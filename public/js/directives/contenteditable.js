@@ -1,31 +1,43 @@
-module.exports = function() {
-  return {
-    restrict: 'A', // only activate on element attribute
-    require: '?ngModel', // get a hold of NgModelController
-    link: function(scope, element, attrs, ngModel) {
-      if(!ngModel) return; // do nothing if no ng-model
+module.exports = function (socket) {
+  return function(Flash) {
+    return {
+      restrict: 'A',
 
-      // Specify how UI should be updated
-      ngModel.$render = function() {
-        element.html(ngModel.$viewValue || '');
-      };
+      link: function ($scope, $elem, $attrs) {
+        if ( $attrs.ngModel && $attrs.scope && $attrs.name ) {
+          $elem.text($scope[$attrs.scope][$attrs.name]);
 
-      // Listen for change events to enable binding
-      element.on('blur keyup change', function() {
-        scope.$apply(read);
-      });
-      read(); // initialize
+          $scope.$watch([$attrs.scope, $attrs.name].join('.'),
+            function (newVal, oldVal) {
+              if ( newVal !== $elem.text() ) {
+                $elem.text(newVal || '');
+              }
+            });
 
-      // Write data to the model
-      function read() {
-        var html = element.html();
-        // When we clear the content editable the browser leaves a <br> behind
-        // If strip-br attribute is provided then we strip this out
-        if( attrs.stripBr && html == '<br>' ) {
-          html = '';
+          $elem.on('blur', function () {
+            if ( $scope[$attrs.scope][$attrs.name] !== $elem.text() ) {
+              $scope[$attrs.scope][$attrs.name] = $elem.text();
+              $scope.$apply();
+
+              if ( 'saveTodoOnChange' in $attrs ) {
+                var set = { $set: {} };
+
+                set.$set[$attrs.name] = $scope.todo[$attrs.name];
+
+                socket.emit('update',
+                  $scope.todo._id,
+                  set,
+                  function (error) {
+                    if ( error ) {
+                      return Flash.error(error);
+                    }
+                  }
+                );
+              }
+            }
+          });
         }
-        ngModel.$setViewValue(html);
       }
-    }
+    };
   };
 };

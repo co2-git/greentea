@@ -6,6 +6,14 @@ $greentea: #43902B;
 $todo-height: 320px;
 
 /*  ****************************************
+ *  Flash
+ *  **************************************** */
+
+.alert-box {
+  margin-bottom: 0;
+ }
+
+/*  ****************************************
  *  Top Bar
  *  **************************************** */
 
@@ -13,8 +21,6 @@ $todo-height: 320px;
   background-color: $greentea;
   font-weight: bold;
   margin-bottom: 20px;
-
-  border-radius: 0 0 10px 10px;
 
   ul {
     margin-bottom: 0

@@ -29,5 +29,5 @@ angular.module('greentea', [])
   })
 
   .directive({
-    contenteditable: require('./directives/contenteditable')
+    contenteditable: require('./directives/contenteditable')(socket)
   });

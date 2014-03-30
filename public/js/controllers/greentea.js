@@ -15,7 +15,10 @@ module.exports = function (socket) {
       $scope.$apply();
     });
 
+    /*  Add a new todo */
+
     $scope.add = function () {
+      console.log($scope);
       if ( ! $scope.newTodo.name ) {
         return Flash.error(new Error('Missing new todo name'));
       }
