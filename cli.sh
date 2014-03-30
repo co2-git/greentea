@@ -5,11 +5,6 @@ if [ ! -f "./package.json" ]; then
   exit 1;
 fi
 
-if ! grep 1>/dev/null 2>&1 '"name": "quinto"' package.json; then
-  echo 'Wrong package json';
-  exit 2;
-fi
-
 function start() {
   startMongo
   startHTTP
