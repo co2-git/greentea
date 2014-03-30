@@ -1,0 +1,135 @@
+/*  ****************************************
+ *  Variables
+ *  **************************************** */
+
+$greentea: #43902B;
+$todo-height: 320px;
+
+/*  ****************************************
+ *  Top Bar
+ *  **************************************** */
+
+[data-topbar] {
+  background-color: $greentea;
+  font-weight: bold;
+  margin-bottom: 20px;
+
+  border-radius: 0 0 10px 10px;
+
+  ul {
+    margin-bottom: 0
+  }
+
+  a {
+    color: white;
+
+    &.brand {
+      display: block;
+      margin-top: 10px;
+      margin-left: 10px
+    }
+  }
+
+  li {
+    margin: 8px;
+  }
+}
+
+/*  ****************************************
+ *  Todo
+ *  **************************************** */
+
+.greentea-todo {
+  height: $todo-height;
+  border: 1px solid #B3C1CA;
+  margin-bottom: 30px;
+  padding: 10px;
+  border-radius: 8px;
+  overflow: auto;
+
+  h2 {
+    color: #37759E;
+  }
+
+  .right {
+    color: #ccc;
+
+    i {
+      display: block;
+      cursor: pointer;
+    }
+
+    i[data-remove] {
+      opacity: 0;
+
+      &:hover {
+        color: orange
+      }
+    }
+
+    i[data-done]:hover, i[data-add]:hover {
+      color: $greentea;
+    }
+  }
+
+  .posted {
+    color: #999;
+  }
+
+  &:hover {
+    .right {
+      opacity: .5;
+
+      &:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+    }
+
+    i[data-remove] {
+      opacity: 1
+    }
+  }
+}
+
+/*  ****************************************
+ *  Done
+ *  **************************************** */
+
+.done {
+  background-color: #efefef;
+  border-color: transparent;
+
+  h2 {
+    color: #666
+  }
+
+  p {
+    color: #999
+  }
+
+  .right {
+    i[data-done] {
+      color: $greentea
+    }
+  }
+}
+
+/*  ****************************************
+ *  New Todo
+ *  **************************************** */
+
+.new {
+  background-color: #EEF5F9;
+
+  border-color: transparent;
+
+  i {
+    color: orange
+  }
+}
+
+[ng-model="newTodo.name"], [ng-model="newTodo.description"] {
+  background-color: #efefef;
+  border-radius: 6px
+}

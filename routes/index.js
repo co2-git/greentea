@@ -4,8 +4,6 @@ module.exports = function landingPage (app) {
       return next();
     }
 
-    res.render('pages/landing-page', {
-      pages: []
-    });
+    res.render('layouts/layout');
   };
 };

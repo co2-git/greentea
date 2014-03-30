@@ -2,6 +2,6 @@
 /dependencies/*
 /node_modules/*
 /public/bower_components/*
-/public/css/quinto.css
+/public/css/*.css
 /public/bundle.js
 /lock.pid

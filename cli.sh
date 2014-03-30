@@ -87,7 +87,9 @@ function home() {
 }
 
 function build () {
-  dependencies/nvm/v0.10.25/bin/node node_modules/.bin/browserify public/js/index.js > public/bundle.js
+  dependencies/nvm/v0.10.25/bin/node node_modules/.bin/browserify public/js/index.js | dependencies/nvm/v0.10.25/bin/node node_modules/.bin/uglifyjs > public/bundle.js
+
+  dependencies/nvm/v0.10.25/bin/node node_modules/.bin/node-sass --output-style compressed public/css/greentea.scss public/css/greentea.css
 }
 
 case "$1" in

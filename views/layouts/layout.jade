@@ -5,66 +5,60 @@ link(rel="icon" type="image/png" href="/images/favicon.png")
 link(rel='stylesheet' href='/bower_components/foundation/css/normalize.css')
 link(rel='stylesheet' href='/bower_components/foundation/css/foundation.min.css')
 link(rel='stylesheet' href='/bower_components/font-awesome/css/font-awesome.min.css')
-link(rel='stylesheet' href='/css/quinto.css')
+link(rel='stylesheet' href='/css/greentea.css')
 
-.text-center(ng-app='quinto')
+.text-center(ng-app='greentea' ng-controller='GreenTeaCtrl')
+  // Flash messages
   .row.collapse
     .columns.small-12
       .flash
 
-  .row.collapse(data-topbar)
-    .columns.small-5.text-left
+  // Top bar
+  .row.sticky(data-topbar)
+    .columns.small-8.text-left
       a.brand(href='/')
         i.fa.fa-leaf
-        span  greentea
+        span  greentea 
+        span.label.round.secondary(ng-bind='todos.length || "0"')
 
-    .columns.small-7.text-right
+    .columns.small-4.text-right
       ul.right.inline-list
         li
-          a(href)
-            i.fa.fa-tasks
-            span.label.round.alert 43562
+          a(href='#')
+            i.fa.fa-filter
 
-        li
-          a(href)
-            i.fa.fa-envelope
-            span.label.round.secondary 0
-        li
-          a(href)
-            i.fa.fa-user
+  .row
+    // New todo
+    .columns.small-12.medium-6.large-4
+      .greentea-todo.new
 
-  .row.collapse
-    .columns.small-12
-      ul.breadcrumbs
-        li
-          a(href)
-            i.fa.fa-bars(data-dropdown="drop")
-
-        li(ng-repeat='parent in PAGE.parents')
-          a(ng-href='{{parent.location}}' ng-bind='parent.name')
+        .right
+          i.fa.fa-thumb-tack.fa-2x(data-add ng-click='add()')
         
-        li.current
-          a(ng-href='{{PAGE.location}}' ng-bind='PAGE.name')
+        h2(ng-model='newTodo.name' contenteditable)
 
-      ul#drop.f-dropdown(data-dropdown-content).text-left
-        li
-          a(href='/tasks')
-            i.fa.fa-tasks
-            span   Tasks
-        li
-          a(href='/projects')
-            i.fa.fa-folder-open
-            span   Projects
-        li
-          a(href='/clients')
-            i.fa.fa-smile-o
-            span   Clients
-        li
-          a(href='/invoices')
-            i.fa.fa-shopping-cart
-            span   Invoices
+        p.des(ng-model='newTodo.description' contenteditable)
 
-  block content
+        div.posted Yet to be posted
+
+    // Todo list
+    .columns.small-12.medium-6.large-4(ng-repeat='todo in todos | orderBy:"done":true')
+      .greentea-todo(ng-class='{ "done": todo.done }')
+        
+        .right
+          i.fa.fa-check-square-o.fa-2x(data-done ng-click='done(todo)')
+          i.fa.fa-trash-o.fa-2x(data-remove ng-click='remove(todo)')
+        
+        h2(ng-bind='todo.name')
+
+        p.des(ng-bind='todo.description')
+
+        p.posted Posted 
+          span(ng-bind='todo.moments.created | fromNow')
+
+        p.posted(ng-show='todo.done && todo.moments.done') Done 
+          span(ng-bind='todo.moments.done | fromNow')
+
 
 script(src='/bower_components/jquery/dist/jquery.min.js')
 script(src='/bower_components/foundation/js/foundation.min.js')
