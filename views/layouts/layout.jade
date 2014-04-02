@@ -1,63 +1,79 @@
 doctype html
 meta(charset='utf-8')
-title greentea
 link(rel="icon" type="image/png" href="/images/favicon.png")
 link(rel='stylesheet' href='/bower_components/foundation/css/normalize.css')
 link(rel='stylesheet' href='/bower_components/foundation/css/foundation.min.css')
 link(rel='stylesheet' href='/bower_components/font-awesome/css/font-awesome.min.css')
-link(rel='stylesheet' href='/css/greentea.css')
+link(rel='stylesheet' href='/css/main.css')
 
 .text-center(ng-app='greentea' ng-controller='GreenTeaCtrl')
+  title greentea ({{(todos.length && (todos | howManyPending)) || 0}})
+  
   // Flash messages
   .row.collapse
     .columns.small-12
       .flash
 
   // Top bar
-  .row.sticky(data-topbar)
+  .row(data-topbar data-magellan-expedition="fixed")
     .columns.small-8.text-left
       a.brand(href='/')
         i.fa.fa-leaf
         span  greentea 
-        span.label.round.secondary(ng-bind='todos.length || "0"')
+        span.label.round.secondary(ng-bind='todos.length && (todos | howManyPending) || 0')
 
     .columns.small-4.text-right
       ul.right.inline-list
         li
-          a(href='#')
+          a(href ng-click='showFilters=!showFilters' ng-class='{ "has-filter": filter.text }')
             i.fa.fa-filter
+        li(ng-show='filter.text')
+          a(href ng-click='filter.text = ""')
+            i.fa.fa-ban
 
-  .row
-    // New todo
-    .columns.small-12.medium-6.large-4
-      .greentea-todo.new
+  // Search & Filters
+  .row.collapse(ng-show='showFilters')
+    .columns.small-12
+      input(type='text' placeholder='Filter' autofocus ng-model='filter.text')
 
-        .right
-          i.fa.fa-thumb-tack.fa-2x(data-add ng-click='add()')
-        
-        h2(ng-model='newTodo.name' contenteditable scope='newTodo' name='name')
+  block content
+    .row(data-list)
+      // New todo
+      .columns.small-12.medium-6.large-4
+        .greentea-todo.new
 
-        p.des(ng-model='newTodo.description' contenteditable scope='newTodo' name='description')
+          .right
+            i.fa.fa-thumb-tack.fa-2x(data-add ng-click='add()')
+          
+          h2(ng-model='newTodo.name' contenteditable scope='newTodo' name='name')
 
-        div.posted Yet to be posted
+          p.des(ng-model='newTodo.description' contenteditable scope='newTodo' name='description')
 
-    // Todo list
-    .columns.small-12.medium-6.large-4(ng-repeat='todo in todos | orderBy:"done":true')
-      .greentea-todo(ng-class='{ "done": todo.done }')
-        
-        .right
-          i.fa.fa-check-square-o.fa-2x(data-done ng-click='done(todo)')
-          i.fa.fa-trash-o.fa-2x(data-remove ng-click='remove(todo)')
-        
-        h2(ng-model='todo.name' contenteditable='true' save-todo-on-change name='name' scope='todo')
+          div.posted Yet to be posted
 
-        p.des(ng-model='todo.description' contenteditable='true' save-todo-on-change name='description' scope='todo')
+      // Todo list
+      .columns.small-12.medium-6.large-4(ng-repeat='todo in todos | orderBy:"done":true | filter:filter.text')
+        .greentea-todo(ng-class='{ "done": todo.done }')
+          
+          .right
+            i.fa.fa-check-square-o.fa-2x(data-done ng-click='done(todo)')
+            i.fa.fa-trash-o.fa-2x(data-remove ng-click='remove(todo)')
+          
+          h2(ng-model='todo.name' contenteditable='true' save-todo-on-change name='name' scope='todo')
 
-        p.posted Posted 
-          span(ng-bind='todo.moments.created | fromNow')
+          p.des(ng-model='todo.description' contenteditable='true' save-todo-on-change name='description' scope='todo')
 
-        p.posted(ng-show='todo.done && todo.moments.done') Done 
-          span(ng-bind='todo.moments.done | fromNow')
+          p.posted Posted 
+            span(ng-bind='todo.moments.created | fromNow')
+
+          p.posted(ng-show='todo.done && todo.moments.done') Done 
+            span(ng-bind='todo.moments.done | fromNow')
+
+  footer
+    .row
+      .columns.small-12
+        p greentea v
+          span(ng-bind='greentea.version')
 
 
 script(src='/bower_components/jquery/dist/jquery.min.js')

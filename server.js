@@ -58,7 +58,7 @@ app.locals.getConn = function () {
   return app.locals.conns[0].db;
 };
 
-app.locals.models = {};
+app.locals.errors = [];
 
 /*
  * ============================================================
@@ -76,6 +76,13 @@ app.use(express.urlencoded());
 app.use(express.json());
 
 app.use(express.cookieParser(Math.random()));
+
+app.use(function (req, res, next) {
+  if ( app.locals.errors.length ) {
+    res.error = app.locals.errors[0].error;
+  }
+  next();
+});
 
 /* Use our routes */
 app.use(app.router);
@@ -142,8 +149,13 @@ function connect () {
       setTimeout(connect, 1000);
 
       if ( error ) {
+        app.locals.errors.push({
+          date: +new Date(),
+          error: error
+        });
         return console.error(error);
       }
+
       app.locals.conns.push({
         db: db,
         uptime: +new Date()

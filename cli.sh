@@ -33,7 +33,8 @@ function stopHTTP () {
       echo HTTP server stopped
       : > lock.pid
     else
-      echo Could not stop http server
+      echo Could not stop http server, forcing shutdown
+      : > lock.pid
     fi
   else
     echo 'HTTP server already stopped'

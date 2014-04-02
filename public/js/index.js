@@ -5,29 +5,25 @@
 $(document).foundation();
 
 /*
- *  Start socket client
- */
-
-var socket = io.connect('http://127.0.0.1:46352');
-
-/*
  *  Start Angular
  */
 
 angular.module('greentea', [])
   
   .filter({
-    fromNow: require('./filters/from-now')
+    fromNow: require('./filters/from-now'),
+    howManyPending: require('./filters/how-many-pending')
   })
 
   .factory({
-    Flash: require('./services/flash')
+    Flash: require('./services/flash'),
+    Socket: require('./services/socket')
   })
 
   .controller({
-    GreenTeaCtrl: require('./controllers/greentea')(socket)
+    GreenTeaCtrl: require('./controllers/greentea')
   })
 
   .directive({
-    contenteditable: require('./directives/contenteditable')(socket)
+    contenteditable: require('./directives/contenteditable')
   });

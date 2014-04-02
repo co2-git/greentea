@@ -4,4 +4,7 @@
 /public/bower_components/*
 /public/css/*.css
 /public/bundle.js
+/public/bundle.min.js
 /lock.pid
+/http.port
+/mongod.port
