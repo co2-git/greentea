@@ -22,7 +22,7 @@
   "config": {
     "mongodb": {
       "host": "127.0.0.1",
-      "database": "quinto"
+      "database": "greentea"
     }
   }
 }

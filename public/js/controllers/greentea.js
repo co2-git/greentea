@@ -136,6 +136,14 @@ module.exports = function ($scope, Flash, Socket) {
       return;
     }
 
+    if ( $("[ng-model='todo.name']:focus").length ) {
+      return;
+    }
+
+    if ( $("[ng-model='todo.description']:focus").length ) {
+      return;
+    }
+
     if ( e.keyCode === 13 || e.keyCode === 27 ) {
       $scope.showFilters = false;
       $scope.$apply();
